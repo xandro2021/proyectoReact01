@@ -1,9 +1,7 @@
 import Paciente from './Paciente';
 
 const ListadoPacientes = () => {
-  console.log('Hola Mundo desde la pantalla negra');
-  console.log('Si me da las sugerencias waka waka');
-  console.log('Hola ahora desde Lvim con la pantalla negra');
+
   return (
     <div className="md:w-1/2 lg:w-3/5 md:h-screen overflow-y-scroll">
 
