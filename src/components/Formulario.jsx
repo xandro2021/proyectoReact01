@@ -10,12 +10,18 @@ const Formulario = ({ pacientes, setPacientes }) => {
 
   const [error, setError] = useState(false);
 
+  const generarId = () => {
+    const random = Math.random().toString(36).substr(2);
+    const fecha = Date.now().toString(36);
+
+    return fecha + random;
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
 
     // Validacion del Formulario
     if ([nombre, propietario, email, fecha, sintomas].some(campo => campo === '')) {
-      console.log('No pueden haber campos vacios');
       setError(true);
       return;
     }
@@ -29,6 +35,7 @@ const Formulario = ({ pacientes, setPacientes }) => {
       email,
       fecha,
       sintomas,
+      id: generarId(),
     }
 
     setPacientes([...pacientes, objetoPaciente]);
@@ -54,7 +61,7 @@ const Formulario = ({ pacientes, setPacientes }) => {
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded-lg py-10 px-5 mb-10"
       >
-        {error && <Error><p>Hola Ale</p></Error>}
+        {error && <Error><p>Todos los campos son obligatorios</p></Error>}
 
         <div className="mb-5">
           <label htmlFor="mascota" className="block text-gray-700 uppercase font-bold">
