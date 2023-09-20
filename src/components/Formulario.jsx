@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Error from './Error';
 
-const Formulario = ({ pacientes, setPacientes }) => {
+const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
   const [nombre, setNombre] = useState('');
   const [propietario, setPropietario] = useState('');
   const [email, setEmail] = useState('');
@@ -9,6 +9,22 @@ const Formulario = ({ pacientes, setPacientes }) => {
   const [sintomas, setSintomas] = useState('');
 
   const [error, setError] = useState(false);
+
+  // Le digo que solo renderice unicamente cuando cambia el state de paciente
+  // useEffect escucha por los cambios que sucedan en alguna parte de nuestro state
+  // Si el arreglo de dependencias esta vacio, significa que el useEffect solo ejecutara una unica vez al cargar el componente
+  useEffect(() => {
+    // Comprobar si el objeto esta vacio
+    if (Object.keys(paciente).length > 0) {
+      setNombre(paciente.nombre);
+      setPropietario(paciente.propietario);
+      setEmail(paciente.email);
+      setFecha(paciente.fecha);
+      setSintomas(paciente.sintomas);
+    }
+
+  }, [paciente]);
+
 
   const generarId = () => {
     const random = Math.random().toString(36).substr(2);
@@ -35,10 +51,26 @@ const Formulario = ({ pacientes, setPacientes }) => {
       email,
       fecha,
       sintomas,
-      id: generarId(),
     }
 
-    setPacientes([...pacientes, objetoPaciente]);
+    if (paciente.id) {
+      // Editando el Registro
+      objetoPaciente.id = paciente.id;
+
+      // Busco en el arreglo el elemento a modificar, dejando los demas elementos tal y como estaban
+      const pacientesActualizados = pacientes.map(pacienteState => pacienteState.id === paciente.id ? objetoPaciente : pacienteState);
+
+      // Modifico el Arreglo que contiene los pacientes
+      setPacientes(pacientesActualizados);
+
+      // Una vez finalizada la edicion, limpio al componente de paciente
+      setPaciente({});
+    }
+    else {
+      // Nuevo Registro
+      objetoPaciente.id = generarId();
+      setPacientes([...pacientes, objetoPaciente]);
+    }
 
     // Reiniciar el formulario
     setNombre('');
@@ -139,7 +171,7 @@ const Formulario = ({ pacientes, setPacientes }) => {
         <input
           type="submit"
           className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-all"
-          value="Agregar Paciente"
+          value={paciente.id ? "Editar Paciente" : "Agregar Paciente"}
         />
 
       </form>
