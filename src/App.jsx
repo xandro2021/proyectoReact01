@@ -1,11 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Formulario from './components/Formulario';
 import Header from "./components/Header";
 import ListadoPacientes from './components/ListadoPacientes';
 
 function App() {
-  const [pacientes, setPacientes] = useState([]);
+  const initialValue = JSON.parse(localStorage.getItem('pacientes')) ?? [];
+  // Inicialmente el proyecto directamente asignaba arreglo vacio al arreglo de pacientes pero eso genera errores con el actual main.jsx generado por vite en vez del antiguo que usa el profesor
+  const [pacientes, setPacientes] = useState(initialValue);
   const [paciente, setPaciente] = useState({});
+
+  // useEffect(() => {
+  //   const obtenerLS = () => {
+  //     const pacientesLS = JSON.parse(localStorage.getItem('pacientes')) ?? [];
+  //     setPacientes(pacientesLS);
+  //   }
+  //   obtenerLS();
+  // }, []);
+
+  useEffect(() => {
+    localStorage.setItem('pacientes', JSON.stringify(pacientes));
+  }, [pacientes]);
 
   const eliminarPaciente = (id) => {
     const pacientesActualizados = pacientes.filter(paciente => paciente.id !== id);
