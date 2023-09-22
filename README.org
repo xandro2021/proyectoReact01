@@ -65,10 +65,11 @@ export default {
 
 #+end_src
 *** New State
++ Originally was using the keyword of purge instead of content, but this was modified since tailwind 3.0
 #+begin_src js
 /** @type {import('tailwindcss').Config} */
 export default {
-  purge: ["index.html", "./src/**/*.jsx"],
+  content: ["index.html", "./src/**/*.jsx"],
   theme: {
     extend: {},
   },
