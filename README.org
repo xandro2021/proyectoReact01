@@ -49,3 +49,30 @@ export default {
   plugins: [],
 }
 #+end_src
+* Deployment Netlify
+** Modify configuration file
++ Modify tailwind.config.js
+*** Previews State
+#+begin_src js
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ["./index.html", "./src/**/*.{jsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+#+end_src
+*** New State
+#+begin_src js
+/** @type {import('tailwindcss').Config} */
+export default {
+  purge: ["index.html", "./src/**/*.jsx"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+#+end_src
